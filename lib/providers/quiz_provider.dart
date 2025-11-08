@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/models/question.dart';
-import '../data/questions.dart';
+import '../data/questions.dart' as data;
 
 class QuizProvider with ChangeNotifier {
-  final List<Question> _questions = questions;
+  final List<Question> _questions = data.questions;
   int _currentQuestionIndex = 0;
   int _score = 0;
 
-  List<Question> get question => _questions;
+  List<Question> get questions => _questions;
   int get currentQuestionIndex => _currentQuestionIndex;
   int get score => _score;
 
