@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
+  static const Color resultExcellent = Colors.greenAccent;
+  static const Color resultGood = Colors.orangeAccent;
+  static const Color resultBad = Colors.redAccent;
+
+  static final Color textGrey = Colors.grey[400]!;
+  static final Color progressBackground = Colors.grey[800]!;
+
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: const Color(0xFF121212),
@@ -27,9 +34,7 @@ class AppTheme {
         backgroundColor: const Color(0xFFBB86FC),
         foregroundColor: Colors.black,
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         textStyle: GoogleFonts.poppins(
           fontSize: 18,
           fontWeight: FontWeight.w600,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:confetti/confetti.dart';
+import 'package:quiz_app/utils/app_theme.dart';
 import '../providers/quiz_provider.dart';
 import 'quiz_screen.dart';
+import '../models/result_data.dart';
 
 class ResultScreen extends StatefulWidget {
   const ResultScreen({super.key});
@@ -28,46 +30,55 @@ class _ResultScreenState extends State<ResultScreen> {
     super.dispose();
   }
 
+  ResultData _calculateResult(double percentage) {
+    if (percentage >= 80) {
+      return ResultData(
+        text: 'Excellent work!',
+        color: AppTheme.resultExcellent,
+        icon: Icons.emoji_events_rounded,
+        confettiEmission: 0.07,
+        confettiParticles: 25,
+        shouldPlayConfetti: true,
+      );
+    } else if (percentage >= 50) {
+      return ResultData(
+        text: 'Not bad!',
+        color: AppTheme.resultGood,
+        icon: Icons.emoji_events_rounded,
+        confettiEmission: 0.02,
+        confettiParticles: 15,
+        shouldPlayConfetti: true,
+      );
+    } else {
+      return ResultData(
+        text: 'Try again!',
+        color: AppTheme.resultBad,
+        icon: Icons.sentiment_dissatisfied_rounded,
+        confettiEmission: 0.0,
+        confettiParticles: 0,
+        shouldPlayConfetti: false,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = context.read<QuizProvider>();
     final score = provider.score;
     final totalQuestions = provider.totalQuestions;
-    final percentage = (score / totalQuestions) * 100;
+    final percentage = (totalQuestions > 0)
+        ? (score / totalQuestions) * 100
+        : 0.0;
 
-    // Налаштування конфеті
-    double confettiEmissionFrequency = 0.0; // За замовчуванням вимкнено
-    int confettiNumberOfParticles = 0;
+    final resultData = _calculateResult(percentage);
 
-    String resultText;
-    Color resultColor;
-
-    if (percentage >= 80) {
-      resultText = 'Excellent work!';
-      resultColor = Colors.greenAccent;
-      // Максимальне свято!
-      confettiEmissionFrequency = 0.05;
-      confettiNumberOfParticles = 20;
+    if (resultData.shouldPlayConfetti) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _confettiController.play();
       });
-    } else if (percentage >= 50) {
-      resultText = 'Not bad!';
-      resultColor = Colors.orangeAccent;
-      // Половина свята
-      confettiEmissionFrequency = 0.02; // Рідше
-      confettiNumberOfParticles = 10; // Менше
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _confettiController.play();
-      });
-    } else {
-      resultText = 'Try again!';
-      resultColor = Colors.redAccent;
-      // Ніякого свята :(
     }
 
     return Scaffold(
-      // Stack потрібен, щоб конфеті малювалися поверх усього
       body: Stack(
         alignment: Alignment.topCenter,
         children: [
@@ -79,20 +90,14 @@ class _ResultScreenState extends State<ResultScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Spacer(),
-                  Icon(
-                    percentage >= 50
-                        ? Icons.emoji_events_rounded
-                        : Icons.sentiment_dissatisfied_rounded,
-                    size: 120,
-                    color: resultColor,
-                  ),
+                  Icon(resultData.icon, size: 120, color: resultData.color),
                   const SizedBox(height: 24),
                   Text(
-                    resultText,
+                    resultData.text,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.displaySmall?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: resultColor,
+                      color: resultData.color,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -101,7 +106,7 @@ class _ResultScreenState extends State<ResultScreen> {
                     textAlign: TextAlign.center,
                     style: Theme.of(
                       context,
-                    ).textTheme.titleLarge?.copyWith(color: Colors.grey[400]),
+                    ).textTheme.titleLarge?.copyWith(color: AppTheme.textGrey,),
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -113,10 +118,8 @@ class _ResultScreenState extends State<ResultScreen> {
                     ),
                   ),
                   const Spacer(),
-                  // Кнопка "Спробувати ще"
                   ElevatedButton.icon(
                     onPressed: () {
-                      // Скидаємо результат
                       context.read<QuizProvider>().resetQuiz();
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
@@ -128,7 +131,6 @@ class _ResultScreenState extends State<ResultScreen> {
                     label: const Text('Try Again'),
                   ),
                   const SizedBox(height: 16),
-                  // Кнопка "На головну" (робить те саме, але виглядає інакше)
                   OutlinedButton(
                     onPressed: () {
                       context.read<QuizProvider>().resetQuiz();
@@ -150,16 +152,13 @@ class _ResultScreenState extends State<ResultScreen> {
               ),
             ),
           ),
-          // Віджет конфеті поверх усього
           ConfettiWidget(
             confettiController: _confettiController,
             blastDirectionality: BlastDirectionality.explosive,
             shouldLoop: false,
-            // Використовуємо наші змінні
-            emissionFrequency: confettiEmissionFrequency,
-            numberOfParticles: confettiNumberOfParticles,
-            // Можна також додати гравітацію, щоб вони падали повільніше/швидше
-            gravity: 0.1,
+            emissionFrequency: resultData.confettiEmission,
+            numberOfParticles: resultData.confettiParticles,
+            gravity: 0.2,
             colors: const [
               Colors.green,
               Colors.blue,
