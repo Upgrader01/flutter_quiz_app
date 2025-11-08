@@ -1,16 +1,17 @@
-# quiz_app
+# Flutter Quiz App 🎯
 
-A new Flutter project.
+A simple and stylish quiz app designed to showcase Flutter skills.
 
-## Getting Started
+## 🚀 What can the app do?
 
-This project is a starting point for a Flutter application.
+* **Testing:** Interactive questions with smooth animation.
+* **Results:** Instant scoring and festive confetti for top performers! 🎉
+* **History:** All attempts are saved on your phone, so your progress won't be lost.
+* **Dark theme:** Modern design. 😎
 
-A few resources to get you started if this is your first Flutter project:
+## 🛠 Technologies
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* **Flutter & Dart** — the foundation of everything.
+* **Provider** — for ‘smart’ application state management.
+* **Shared Preferences** — for saving history.
+* **Clean Architecture** — structured, clean, and understandable code.

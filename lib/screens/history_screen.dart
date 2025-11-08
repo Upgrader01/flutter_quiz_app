@@ -12,31 +12,29 @@ class HistoryScreen extends StatelessWidget {
     final history = context.watch<QuizProvider>().history;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quiz History'),
-      ),
+      appBar: AppBar(title: const Text('Quiz History')),
       body: history.isEmpty
           ? Center(
               child: Text(
                 'No history yet.\nPlay some quizzes!',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppTheme.textGrey,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(color: AppTheme.textGrey),
               ),
             )
           : ListView.separated(
               padding: const EdgeInsets.all(16),
               itemCount: history.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              separatorBuilder: (_, _) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 final result = history[index];
                 final percentage = (result.score / result.totalQuestions) * 100;
                 Color scoreColor = percentage >= 80
                     ? AppTheme.resultExcellent
                     : (percentage >= 50
-                        ? AppTheme.resultGood
-                        : AppTheme.resultBad);
+                          ? AppTheme.resultGood
+                          : AppTheme.resultBad);
 
                 return Card(
                   color: Theme.of(context).colorScheme.surface,
@@ -50,7 +48,9 @@ class HistoryScreen extends StatelessWidget {
                       child: Text(
                         '${percentage.toInt()}%',
                         style: TextStyle(
-                            color: scoreColor, fontWeight: FontWeight.bold),
+                          color: scoreColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     title: Text(
@@ -58,7 +58,7 @@ class HistoryScreen extends StatelessWidget {
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
-                       DateFormat('MMM d, yyyy - HH:mm').format(result.date),
+                      DateFormat('MMM d, yyyy - HH:mm').format(result.date),
                     ),
                   ),
                 );
