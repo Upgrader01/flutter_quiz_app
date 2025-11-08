@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quiz_app/screens/history_screen.dart';
 import '../providers/quiz_provider.dart';
 import '../screens/quiz_screen.dart';
 
@@ -58,9 +59,10 @@ class HomeScreen extends StatelessWidget {
               // History button
               OutlinedButton(
                 onPressed: () {
-                  // TODO: Перейти на екран історії
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Історія скоро буде!')),
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const HistoryScreen(),
+                    ),
                   );
                 },
                 style: OutlinedButton.styleFrom(

@@ -27,10 +27,12 @@ class _QuizScreenState extends State<QuizScreen> {
     super.dispose();
   }
 
-  void _nextQuestion(BuildContext context) {
+  Future<void> _nextQuestion(BuildContext context) async {
     final provider = context.read<QuizProvider>();
 
-    if (provider.currentQuestionIndex >= provider.totalQuestions) {
+    if (provider.isQuizFinished) {
+      await provider.saveCurrentResult();
+      if (!context.mounted) return;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const ResultScreen()),
       );
