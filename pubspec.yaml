@@ -10,10 +10,11 @@ dependencies:
   flutter:
     sdk: flutter
   
+  cupertino_icons: ^1.0.8
   provider: ^6.0.0
   shared_preferences: ^2.2.0
   confetti: ^0.8.0
-  cupertino_icons: ^1.0.8
+  google_fonts: ^6.3.2
 
 dev_dependencies:
   flutter_test:
