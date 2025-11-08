@@ -54,8 +54,8 @@ class _ResultScreenState extends State<ResultScreen> {
         text: 'Try again!',
         color: AppTheme.resultBad,
         icon: Icons.sentiment_dissatisfied_rounded,
-        confettiEmission: 0.0,
-        confettiParticles: 0,
+        confettiEmission: 0.01,
+        confettiParticles: 1,
         shouldPlayConfetti: false,
       );
     }
